@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#14263d"><meta name="description" content="ZouhairFlow — a simple business organiser for clients, bookings and cash flow.">
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>ZouhairFlow — Business, in flow.</title>
+<style>
+:root{--navy:#14263d;--teal:#159a8c;--gold:#d8b46a;--bg:#f3f6f9;--card:#fff;--ink:#172b43;--muted:#718096;--line:#e5ebf0;--red:#c64b4b;--shadow:0 10px 28px rgba(20,38,61,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+.sidebar{background:var(--navy);color:white;padding:26px 18px;display:flex;flex-direction:column;gap:26px}
+.brand{display:flex;align-items:center;gap:11px}.mark{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--teal),#0d6f70);display:grid;place-items:center;font-weight:800;color:white;box-shadow:0 5px 16px #0003}.brand b{font-size:18px;letter-spacing:.2px}.brand small{display:block;color:#b9c8d8;font-size:11px;letter-spacing:1.5px}
+nav{display:grid;gap:7px}nav button{border:0;background:transparent;color:#c8d4e0;text-align:left;padding:12px 13px;border-radius:11px;font-weight:600}nav button.active,nav button:hover{background:#ffffff18;color:#fff}nav button span{display:inline-block;width:25px;color:#80d4c9}
+.sidefoot{margin-top:auto;color:#9fb0c2;font-size:12px}
+main{padding:28px clamp(16px,3vw,42px);min-width:0}.top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:28px}.eyebrow{color:var(--teal);font-size:11px;font-weight:800;letter-spacing:1.7px;text-transform:uppercase}.top h1{margin:4px 0 0;font-size:clamp(24px,3vw,32px);color:var(--navy)}.top-actions{display:flex;gap:9px;align-items:center}
+.btn{border:0;border-radius:10px;padding:10px 15px;font-weight:700}.primary{background:var(--teal);color:white;box-shadow:0 5px 14px #159a8c35}.ghost{background:white;color:var(--navy);border:1px solid var(--line)}.lang{padding:9px;border:1px solid var(--line);border-radius:9px;background:white;color:var(--navy)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:19px;box-shadow:var(--shadow);min-width:0}.metric-label{color:var(--muted);font-size:13px;font-weight:600}.metric{font-size:27px;font-weight:800;color:var(--navy);margin-top:8px}.metric-note{color:var(--teal);font-size:12px;margin-top:4px}
+.section{margin-top:22px}.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:12px}.section-head h2{margin:0;font-size:17px;color:var(--navy)}.panel{background:white;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+table{width:100%;border-collapse:collapse;min-width:620px}th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line);font-size:13px}th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px;background:#fbfcfd}td{color:#33465c}.empty{text-align:center;padding:28px;color:var(--muted)}
+.content{display:none}.content.active{display:block}.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}.search{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:white;min-width:220px;flex:1}
+.formrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field{display:grid;gap:6px;margin-bottom:12px}.field label{font-size:12px;font-weight:700;color:var(--muted)}.field input,.field select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink)}
+.modal{position:fixed;inset:0;background:#0b1b2dcc;display:none;align-items:center;justify-content:center;padding:16px;z-index:5}.modal.open{display:flex}.dialog{background:white;border-radius:17px;padding:22px;width:min(520px,100%);max-height:90vh;overflow:auto;box-shadow:0 25px 70px #0004}.dialog h2{margin:0 0 16px;color:var(--navy)}.dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
+.notice{background:#eef8f6;color:#176e65;border:1px solid #d2eee8;padding:12px 14px;border-radius:11px;font-size:13px;margin-bottom:16px}
+footer{color:var(--muted);font-size:11px;margin:24px 2px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.app{grid-template-columns:205px 1fr}.sidebar{padding:20px 13px}}
+@media(max-width:650px){.app{display:block}.sidebar{position:sticky;top:0;z-index:3;padding:10px 12px;display:flex;flex-direction:row;align-items:center;gap:12px}.brand{flex-shrink:0}.brand small,.sidefoot{display:none}.mark{width:36px;height:36px}.brand b{font-size:15px}nav{display:flex;overflow:auto;gap:4px;flex:1}nav button{white-space:nowrap;padding:9px 10px;font-size:12px}nav button span{width:auto;margin-right:4px}.top{align-items:flex-start;flex-direction:column;margin-bottom:20px}.top-actions{width:100%}.grid{gap:10px}.card{padding:14px}.metric{font-size:22px}main{padding:20px 13px}.formrow{grid-template-columns:1fr}.section-head{align-items:flex-start}.panel{overflow-x:auto}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+ <div class="brand"><div class="mark">ZF</div><div><b>ZouhairFlow</b><small>BUSINESS, IN FLOW.</small></div></div>
+ <nav id="nav">
+  <button class="active" data-page="dashboard"><span>▦</span><i data-i18n="dashboard">Dashboard</i></button>
+  <button data-page="clients"><span>♙</span><i data-i18n="clients">Clients</i></button>
+  <button data-page="bookings"><span>▣</span><i data-i18n="bookings">Bookings</i></button>
+  <button data-page="finance"><span>↗</span><i data-i18n="finance">Cash flow</i></button>
+ </nav>
+ <div class="sidefoot">© 2026 ZouhairFlow<br>Created by Zouhair Radhouani<br>Private workspace · Data stays on this device</div>
+</aside>
+<main>
+ <div class="top"><div><div class="eyebrow" data-i18n="workspace">YOUR WORKSPACE</div><h1 id="pageTitle">Business overview</h1></div>
+ <div class="top-actions"><select class="lang" id="language" aria-label="Language"><option value="en">EN</option><option value="fr">FR</option><option value="ar">AR</option></select><button class="btn ghost" id="installBtn" hidden data-i18n="install">Install app</button><button class="btn primary" id="quickAdd" data-i18n="addEntry">＋ Add entry</button></div></div>
+ <section class="content active" id="dashboard">
+  <div class="notice" data-i18n="localNotice">Your information is saved in this browser on this device. Export/backup is not enabled in this demo.</div>
+  <div class="grid">
+   <div class="card"><div class="metric-label" data-i18n="totalClients">Total clients</div><div class="metric" id="mClients">0</div><div class="metric-note" data-i18n="clientBook">In your client book</div></div>
+   <div class="card"><div class="metric-label" data-i18n="bookings">Bookings</div><div class="metric" id="mBookings">0</div><div class="metric-note" data-i18n="appointmentsTracked">Appointments tracked</div></div>
+   <div class="card"><div class="metric-label" data-i18n="income">Income</div><div class="metric" id="mIncome">$0.00</div><div class="metric-note" data-i18n="recordedIncome">Recorded income</div></div>
+   <div class="card"><div class="metric-label" data-i18n="costs">Costs</div><div class="metric" id="mCosts">$0.00</div><div class="metric-note" data-i18n="recordedCosts">Recorded costs</div></div>
+  </div>
+  <div class="section"><div class="section-head"><h2 data-i18n="recentBookings">Recent bookings</h2><button class="btn ghost" data-goto="bookings" data-i18n="viewAll">View all</button></div><div class="panel"><table><thead><tr><th data-i18n="client">Client</th><th data-i18n="service">Service</th><th data-i18n="date">Date</th><th data-i18n="status">Status</th></tr></thead><tbody id="recentRows"></tbody></table></div></div>
+ </section>
+ <section class="content" id="clients"><div class="toolbar"><input class="search" id="clientSearch" placeholder="Search clients…"><button class="btn primary" id="newClient" data-i18n="addClient">＋ Add client</button></div><div class="panel"><table><thead><tr><th data-i18n="name">Name</th><th>Email</th><th data-i18n="phone">Phone</th><th data-i18n="service">Service</th><th></th></tr></thead><tbody id="clientRows"></tbody></table></div></section>
+ <section class="content" id="bookings"><div class="toolbar"><input class="search" id="bookingSearch" placeholder="Search bookings…"><button class="btn primary" id="newBooking" data-i18n="addBooking">＋ Add booking</button></div><div class="panel"><table><thead><tr><th data-i18n="client">Client</th><th data-i18n="service">Service</th><th data-i18n="date">Date</th><th data-i18n="price">Price</th><th data-i18n="status">Status</th><th></th></tr></thead><tbody id="bookingRows"></tbody></table></div></section>
+ <section class="content" id="finance"><div class="grid">
+  <div class="card"><div class="metric-label" data-i18n="income">Income</div><div class="metric" id="fIncome">$0.00</div></div>
+  <div class="card"><div class="metric-label" data-i18n="costs">Costs</div><div class="metric" id="fCosts">$0.00</div></div>
+  <div class="card"><div class="metric-label" data-i18n="net">Net result</div><div class="metric" id="fNet">$0.00</div></div>
+  <div class="card"><div class="metric-label" data-i18n="transactions">Transactions</div><div class="metric" id="fCount">0</div></div>
+ </div><div class="section"><div class="section-head"><h2 data-i18n="transactions">Transactions</h2><button class="btn primary" id="newTransaction" data-i18n="addTransaction">＋ Add transaction</button></div><div class="panel"><table><thead><tr><th data-i18n="type">Type</th><th data-i18n="category">Category</th><th data-i18n="date">Date</th><th data-i18n="amount">Amount</th><th></th></tr></thead><tbody id="transactionRows"></tbody></table></div></div></section>
+ <footer>ZouhairFlow is an early MVP, created by Zouhair Radhouani. It is not accounting, tax, payment-processing or cloud-sync software.</footer>
+</main>
+</div>
+<div class="modal" id="modal"><div class="dialog"><h2 id="modalTitle">Add</h2><form id="entryForm"></form></div></div>
+<script>
+const translations={
+en:{dashboard:"Dashboard",clients:"Clients",bookings:"Bookings",finance:"Cash flow",workspace:"YOUR WORKSPACE",install:"Install app",addEntry:"＋ Add entry",overview:"Business overview",localNotice:"Your information is saved in this browser on this device. Export/backup is not enabled in this demo.",totalClients:"Total clients",clientBook:"In your client book",appointmentsTracked:"Appointments tracked",income:"Income",costs:"Costs",recordedIncome:"Recorded income",recordedCosts:"Recorded costs",recentBookings:"Recent bookings",viewAll:"View all",client:"Client",service:"Service",date:"Date",status:"Status",name:"Name",phone:"Phone",addClient:"＋ Add client",addBooking:"＋ Add booking",price:"Price",net:"Net result",transactions:"Transactions",addTransaction:"＋ Add transaction",type:"Type",category:"Category",amount:"Amount",empty:"No records yet.",remove:"Delete",save:"Save",cancel:"Cancel",email:"Email",newClient:"New client",newBooking:"New booking",newTransaction:"New transaction",paid:"Paid",pending:"Pending",unpaid:"Unpaid"},
+fr:{dashboard:"Tableau de bord",clients:"Clients",bookings:"Rendez-vous",finance:"Trésorerie",workspace:"VOTRE ESPACE",install:"Installer",addEntry:"＋ Ajouter",overview:"Vue d’ensemble",localNotice:"Vos données sont enregistrées dans ce navigateur sur cet appareil. La sauvegarde/export n’est pas activée dans cette démo.",totalClients:"Nombre de clients",clientBook:"Dans votre répertoire",appointmentsTracked:"Rendez-vous suivis",income:"Recettes",costs:"Dépenses",recordedIncome:"Recettes enregistrées",recordedCosts:"Dépenses enregistrées",recentBookings:"Rendez-vous récents",viewAll:"Tout voir",client:"Client",service:"Service",date:"Date",status:"Statut",name:"Nom",phone:"Téléphone",addClient:"＋ Ajouter client",addBooking:"＋ Ajouter rendez-vous",price:"Prix",net:"Résultat net",transactions:"Transactions",addTransaction:"＋ Ajouter transaction",type:"Type",category:"Catégorie",amount:"Montant",empty:"Aucun enregistrement.",remove:"Supprimer",save:"Enregistrer",cancel:"Annuler",email:"E-mail",newClient:"Nouveau client",newBooking:"Nouveau rendez-vous",newTransaction:"Nouvelle transaction",paid:"Payé",pending:"En attente",unpaid:"Impayé"},
+ar:{dashboard:"لوحة التحكم",clients:"العملاء",bookings:"المواعيد",finance:"التدفقات المالية",workspace:"مساحة عملك",install:"تثبيت التطبيق",addEntry:"＋ إضافة",overview:"نظرة عامة على النشاط",localNotice:"تُحفظ معلوماتك في هذا المتصفح على هذا الجهاز. النسخ الاحتياطي غير متاح في هذه النسخة التجريبية.",totalClients:"إجمالي العملاء",clientBook:"في قائمة عملائك",appointmentsTracked:"المواعيد المسجلة",income:"المداخيل",costs:"المصاريف",recordedIncome:"المداخيل المسجلة",recordedCosts:"المصاريف المسجلة",recentBookings:"أحدث المواعيد",viewAll:"عرض الكل",client:"العميل",service:"الخدمة",date:"التاريخ",status:"الحالة",name:"الاسم",phone:"الهاتف",addClient:"＋ إضافة عميل",addBooking:"＋ إضافة موعد",price:"السعر",net:"الصافي",transactions:"المعاملات",addTransaction:"＋ إضافة معاملة",type:"النوع",category:"الصنف",amount:"المبلغ",empty:"لا توجد بيانات بعد.",remove:"حذف",save:"حفظ",cancel:"إلغاء",email:"البريد الإلكتروني",newClient:"عميل جديد",newBooking:"موعد جديد",newTransaction:"معاملة جديدة",paid:"مدفوع",pending:"قيد الانتظار",unpaid:"غير مدفوع"}
+};
+let lang="en",page="dashboard",data=JSON.parse(localStorage.getItem("zf_data")||'{"clients":[],"bookings":[],"transactions":[]}');
+const $=id=>document.getElementById(id), t=k=>translations[lang][k]||k;
+function persist(){localStorage.setItem("zf_data",JSON.stringify(data));render()}
+function money(n){return new Intl.NumberFormat(lang==="ar"?"ar-TN":lang==="fr"?"fr-FR":"en-US",{style:"currency",currency:"USD"}).format(Number(n||0))}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function empty(cols){return `<tr><td class="empty" colspan="${cols}">${t("empty")}</td></tr>`}
+function render(){
+ $("mClients").textContent=data.clients.length;$("mBookings").textContent=data.bookings.length;
+ let inc=data.transactions.filter(x=>x.type==="Income").reduce((a,x)=>a+Number(x.amount),0),cost=data.transactions.filter(x=>x.type==="Cost").reduce((a,x)=>a+Number(x.amount),0);
+ $("mIncome").textContent=money(inc);$("mCosts").textContent=money(cost);$("fIncome").textContent=money(inc);$("fCosts").textContent=money(cost);$("fNet").textContent=money(inc-cost);$("fCount").textContent=data.transactions.length;
+ $("clientRows").innerHTML=data.clients.length?data.clients.filter(x=>(x.name+" "+x.email).toLowerCase().includes(($("clientSearch").value||"").toLowerCase())).map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.email)}</td><td>${esc(x.phone)}</td><td>${esc(x.service)}</td><td><button class="btn ghost" onclick="del('clients','${x.id}')">${t("remove")}</button></td></tr>`).join(""):empty(5);
+ const bs=data.bookings.slice().sort((a,b)=>a.date.localeCompare(b.date));
+ $("bookingRows").innerHTML=bs.length?bs.filter(x=>(x.client+" "+x.service).toLowerCase().includes(($("bookingSearch").value||"").toLowerCase())).map(x=>`<tr><td>${esc(x.client)}</td><td>${esc(x.service)}</td><td>${esc(x.date)}</td><td>${money(x.price)}</td><td>${esc(x.status)}</td><td><button class="btn ghost" onclick="del('bookings','${x.id}')">${t("remove")}</button></td></tr>`).join(""):empty(6);
+ $("recentRows").innerHTML=bs.slice(-5).reverse().map(x=>`<tr><td>${esc(x.client)}</td><td>${esc(x.service)}</td><td>${esc(x.date)}</td><td>${esc(x.status)}</td></tr>`).join("")||empty(4);
+ $("transactionRows").innerHTML=data.transactions.length?data.transactions.slice().reverse().map(x=>`<tr><td>${esc(x.type)}</td><td>${esc(x.category)}</td><td>${esc(x.date)}</td><td>${money(x.amount)}</td><td><button class="btn ghost" onclick="del('transactions','${x.id}')">${t("remove")}</button></td></tr>`).join(""):empty(5);
+}
+function del(kind,id){if(confirm("Delete this record?")){data[kind]=data[kind].filter(x=>x.id!==id);persist()}}
+function go(p){page=p;document.querySelectorAll(".content").forEach(x=>x.classList.toggle("active",x.id===p));document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("active",x.dataset.page===p));$("pageTitle").textContent=t(p==="dashboard"?"overview":p);$("quickAdd").hidden=p==="dashboard";render()}
+$("nav").addEventListener("click",e=>{let b=e.target.closest("button[data-page]");if(b)go(b.dataset.page)});
+document.querySelectorAll("[data-goto]").forEach(b=>b.addEventListener("click",()=>go(b.dataset.goto)));
+function openForm(kind){
+ const cfg={
+ clients:{title:"newClient",fields:[["name","text",true],["email","email",false],["phone","tel",false],["service","text",false]]},
+ bookings:{title:"newBooking",fields:[["client","text",true],["service","text",true],["date","date",true],["price","number",true],["status","select",true,["Pending","Paid","Unpaid"]]]},
+ transactions:{title:"newTransaction",fields:[["type","select",true,["Income","Cost"]],["category","text",true],["date","date",true],["amount","number",true]]}
+ }[kind];
+ $("modalTitle").textContent=t(cfg.title);
+ $("entryForm").innerHTML=cfg.fields.map(([key,type,req,opts])=>`<div class="field"><label>${t(key)}</label>${type==="select"?`<select name="${key}">${opts.map(o=>`<option>${o}</option>`).join("")}</select>`:`<input name="${key}" type="${type}" ${req?"required":""} ${type==="number"?'min="0" step="0.01"':""} ${type==="date"?'value="'+new Date().toISOString().slice(0,10)+'"':""}></div>`).join("")+`<div class="dialog-actions"><button type="button" class="btn ghost" id="cancelForm">${t("cancel")}</button><button class="btn primary">${t("save")}</button></div>`;
+ $("modal").classList.add("open");$("cancelForm").onclick=()=>$("modal").classList.remove("open");
+ $("entryForm").onsubmit=e=>{e.preventDefault();let obj=Object.fromEntries(new FormData(e.target));obj.id=crypto.randomUUID();data[kind].push(obj);$("modal").classList.remove("open");persist()};
+}
+$("newClient").onclick=()=>openForm("clients");$("newBooking").onclick=()=>openForm("bookings");$("newTransaction").onclick=()=>openForm("transactions");
+$("quickAdd").onclick=()=>openForm(page==="clients"?"clients":page==="bookings"?"bookings":"transactions");
+$("clientSearch").oninput=render;$("bookingSearch").oninput=render;
+$("language").onchange=e=>{lang=e.target.value;document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=t(el.dataset.i18n));$("pageTitle").textContent=t(page==="dashboard"?"overview":page);render()};
+let installPrompt;window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();installPrompt=e;$("installBtn").hidden=false});
+$("installBtn").onclick=async()=>{if(installPrompt){installPrompt.prompt();await installPrompt.userChoice;installPrompt=null}else alert("Use your browser menu and choose Add to Home Screen / Install app.")};
+if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("./sw.js").catch(()=>{});
+render();
+</script>
+</body></html>
